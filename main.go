@@ -59,6 +59,11 @@ func main() {
 
 	fields:= []Field{
 		{
+			Title: "Ref",
+			Value: os.Getenv("GITHUB_REF"),
+			Short: true,
+		},
+		{
 			Title: os.Getenv(EnvSlackTitle),
 			Value: envOr(EnvSlackMessage, "EOM"),
 			Short: false,
