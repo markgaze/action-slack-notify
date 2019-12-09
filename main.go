@@ -17,9 +17,6 @@ const (
 	EnvSlackColor    = "SLACK_COLOR"
 	EnvSlackUserName = "SLACK_USERNAME"
 	EnvGithubActor   = "GITHUB_ACTOR"
-	EnvSiteName      = "SITE_NAME"
-	EnvHostName      = "HOST_NAME"
-	EnvDepolyPath    = "DEPLOY_PATH"
 )
 
 type Webhook struct {
@@ -29,7 +26,7 @@ type Webhook struct {
 	IconEmoji   string       `json:"icon_emoji,omitempty"`
 	Channel     string       `json:"channel,omitempty"`
 	UnfurlLinks bool         `json:"unfurl_links"`
-	Attachments []Attachment `json:"attachments,omitmepty"`
+	Attachments []Attachment `json:"attachments,omitempty"`
 }
 
 type Attachment struct {
@@ -39,9 +36,7 @@ type Attachment struct {
 	AuthorName string  `json:"author_name,omitempty"`
 	AuthorLink string  `json:"author_link,omitempty"`
 	AuthorIcon string  `json:"author_icon,omitempty"`
-	Footer     string  `json:"footer,omitempty"`
 	Fields     []Field `json:"fields,omitempty"`
-	
 }
 
 type Field struct {
@@ -64,41 +59,10 @@ func main() {
 
 	fields:= []Field{
 		{
-			Title: "Ref",
-			Value: os.Getenv("GITHUB_REF"),
-			Short: true,
-		},                {
-			Title: "Event",
-			Value: os.Getenv("GITHUB_EVENT_NAME"),
-			Short: true,
-		},
-		{
-			Title: "Repo Action URL",
-			Value: "https://github.com/" + os.Getenv("GITHUB_REPOSITORY") + "/actions",
-			Short: false,
-		},
-		{
 			Title: os.Getenv(EnvSlackTitle),
 			Value: envOr(EnvSlackMessage, "EOM"),
 			Short: false,
 		},
-	}
-
-	hostName := os.Getenv(EnvHostName)
-	if hostName != "" {
-		newfields:= []Field{
-			{
-				Title: os.Getenv("SITE_TITLE"),
-				Value: os.Getenv(EnvSiteName),
-				Short: true,
-			},
-			{
-				Title: os.Getenv("HOST_TITLE"),
-				Value: os.Getenv(EnvHostName),
-				Short: true,
-			},
-		}
-		fields = append(newfields, fields...)
 	}
 
 	msg := Webhook{
@@ -112,7 +76,6 @@ func main() {
 				AuthorName: envOr(EnvGithubActor, ""),
 				AuthorLink: "http://github.com/" + os.Getenv(EnvGithubActor),
 				AuthorIcon: "http://github.com/" + os.Getenv(EnvGithubActor) + ".png?size=32",
-				Footer: "<https://github.com/rtCamp/github-actions-library|Powered By rtCamp's GitHub Actions Library>",
 				Fields: fields,
 			},
 		},
