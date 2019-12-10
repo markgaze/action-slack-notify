@@ -60,7 +60,7 @@ func main() {
 	fields:= []Field{
 		{
 			Value: envOr(EnvSlackMessage, "EOM"),
-			Short: true,
+			Short: false,
 		},
 	}
 
