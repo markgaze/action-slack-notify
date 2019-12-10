@@ -62,10 +62,6 @@ func main() {
 			Value: envOr(EnvSlackMessage, "EOM"),
 			Short: true,
 		},
-		{
-			Value: os.Getenv("GITHUB_REF"),
-			Short: true,
-		},
 	}
 
 	msg := Webhook{
